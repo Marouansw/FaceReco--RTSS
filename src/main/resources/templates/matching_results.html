@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Results</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+<link rel="stylesheet" href="/css/style_2.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!-- JQUERY and Normalize.css INSTALLED -->
+
+<div class="overlay">
+	<div class="overlayDoor"></div>
+	<div class="overlayContent">
+		<div class="loader">
+			<div class="inner"></div>
+		</div>
+		<div class="skip">SKIP</div>
+	</div>
+</div>
+
+
+
+
+
+
+<!-- DON'T NEED THIS PART -->
+<div class="header">
+	<div class="darken">   </div>
+</div>
+
+
+  <div class="result-container">
+	<div id="messageDisplay"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+<script th:inline="javascript">
+	
+	/*<![CDATA[*/
+	// Parse the Thymeleaf variable to JSON
+	var message = /*[[${message}]]*/ '{}';
+	message = JSON.parse(message);
+
+	// Assuming message.features contains the features array string
+	var featuresString = message.features;
+
+	// Remove the outer square brackets if any
+	if (featuresString.startsWith('[[') && featuresString.endsWith(']]')) {
+		featuresString = featuresString.slice(1, -1);
+	}
+
+	// Parse the cleaned features string into an array
+	var featuresArray = JSON.parse(featuresString);
+
+	function cosineSimilarity(arr1, arr2) {
+		if (arr1.length !== arr2.length) return false;
+
+		let dotProduct = 0;
+		let normA = 0;
+		let normB = 0;
+		for (let i = 0; i < arr1.length; i++) {
+			dotProduct += arr1[i] * arr2[i];
+			normA += arr1[i] * arr1[i];
+			normB += arr2[i] * arr2[i];
+		}
+		if (normA === 0 || normB === 0) return false; // to avoid division by zero
+
+		return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+	}
+
+	function isMatch(arr1, arr2, threshold = 0.75) {
+		const similarity = cosineSimilarity(arr1, arr2);
+		console.log("similarity:" + similarity);
+		return similarity >= threshold;
+	}
+
+	// Extract features array
+	function loadCSVAndCompare() {
+		Papa.parse("/hashed_features1.csv", {
+			download: true,
+			header: false,
+			complete: function(results) {
+				let matchingRows = [];
+				let matchFound = results.data.some((row, i) => {
+					if (row.length > 4) {
+						let csvFeatures = row[4]; // Assuming JSON string is in the 5th column (index 4)
+						try {
+							let csvFeaturesArray = JSON.parse(csvFeatures);
+							console.log(csvFeaturesArray);
+							console.log(i); // Log current iteration count
+							if (isMatch(featuresArray, csvFeaturesArray)) {
+								matchingRows.push(row);
+								return true; // Exit loop
+							}
+						} catch (error) {
+							console.error(`Error parsing JSON in row ${i}:`, error);
+						}
+					} else {
+						console.warn(`Row ${i} does not have enough columns:`, row);
+					}
+					return false; // Continue loop
+				});
+				if (!matchFound) {
+					console.log('No matching rows found.');
+				}
+				console.log(`Total rows processed: ${results.data.length}`); // Log total rows processed
+				displayResult(matchingRows);
+			},
+			error: function(error) {
+				console.error('Error parsing CSV file:', error);
+			}
+		});
+	}
+
+	// Function to display the result
+	function displayResult(matchingRows) {
+		const featuresElement = document.getElementById('messageDisplay');
+		if (matchingRows.length > 0) {
+			const firstRow = matchingRows[0];
+			const imageURL = firstRow[0]; // Assuming first column contains the image URL
+			const name = firstRow[1]; // Assuming second column contains the name
+			const age = firstRow[2]; // Assuming third column contains the age
+			const profession = firstRow[3]; // Assuming fourth column contains the profession
+			const gender = firstRow[5]; // Assuming fourth column contains the profession
+			
+			const resultHTML = `
+				<img src="/image/check.png" class="blinking-image" alt="Desktop PC Hacker Security" style="width: 75px; float:left;margin-left:7px;margin-right:0px">
+				<div class="image-container" style="box-shadow: 1px 4px 4px rgb(47, 229, 101);">
+					<img src="/image/${imageURL}" alt="Desktop PC Hacker Security">
+				</div>
+				<div class="info-container"> 
+					<h4 class='deepshadow'>${name}</h4>
+					<ul class="details">
+						<li><strong>Gender: </strong> ${gender}</li>
+						<li><strong>Profession: </strong> ${profession}</li>
+						<li><strong>Age: </strong> ${age}</li>
+					</ul>
+				</div>
+			`;
+			featuresElement.innerHTML = resultHTML;
+		} else {
+                const noMatchHTML = `
+                    <img src="/image/x-button.png" class="blinking-image" alt="Desktop PC Hacker Security" style="width: 75px; float:left;margin-left:7px;margin-right:0px">
+                    <div class="image-container" style="box-shadow: 1px 8px 8px rgb(255, 0, 0);">
+                        <img src="/image/access-denied-design-template-69f42745026a6869181c8f2a45bd6bd8_screen.jpg" alt="Desktop PC Hacker Security">
+                    </div>
+                    <div class="info-container"> 
+                        <h4 class='deepshadow' style="color: red;"> Personne <br>NON  VERIFIée</h4>
+                    </div>
+                `;
+                featuresElement.innerHTML = noMatchHTML;
+            
+		}
+	}
+	// Load and compare CSV after the page loads
+	window.onload = function() {
+		loadCSVAndCompare();
+	};
+	/*]]>*/
+	
+</script>
+<!-- partial -->
+  <script  src="/js/script_2.js"></script>
+ 
+
+</body>
+</html>
