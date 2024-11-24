@@ -32,9 +32,11 @@ def process_and_save_image(base64_compressed_image):
         # Decompress GZIP
         buffer = io.BytesIO(compressed_data)
         with gzip.GzipFile(fileobj=buffer, mode='rb') as f:
+            #----------- SEND the decoded and decompressed image to the model's api
             response = requests.post(url, files={'image': f})
             response.raise_for_status()
             response_json = response.json()
+            # ------ GET the reponse (which is the features extracted of the model's api)
             features = response_json.get('features', [])
             return json.dumps(features)
     except Exception as e:
@@ -44,7 +46,7 @@ def process_and_save_image(base64_compressed_image):
 # Register the UDF
 process_and_save_image_udf = udf(process_and_save_image, StringType())
 
-# Read from Kafka
+# Read from Kafka (iow, read the image, and apply the function above)
 df = spark \
     .readStream \
     .format("kafka") \
@@ -63,7 +65,7 @@ processed_df = df.select(
 # Define the foreachBatch function to print results to the console
 def print_batch(df, epoch_id):
     df.show(truncate=False)
-    # Write the results back to Kafka
+    # Write the results back to another Kafka topic
     df.select(to_json(struct("features")).alias("value")) \
         .write \
         .format("kafka") \
