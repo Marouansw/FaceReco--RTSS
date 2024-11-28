@@ -1,10 +1,12 @@
 
-# Real Time Surveillance System 
+# FaceReco -- Real Time Surveillance System 
 
 ## How The App Looks Like
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](images/home.png)
+#### Waiting for the model's output
+![App Screenshot](images/processing.png)
+#### There we go, successfully recognized me !
+![App Screenshot](images/result.png)
 
 
 # A Brief History Of What The Project Does 💡
