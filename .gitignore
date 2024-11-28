@@ -1,5 +1,6 @@
 HELP.md
 target/
+gt_db
 s52/
 s53/
 !.mvn/wrapper/maven-wrapper.jar
@@ -14,7 +15,7 @@ s53/
 .settings
 .springBeans
 .sts4-cache
-
+face_reco
 ### IntelliJ IDEA ###
 .idea
 *.iws

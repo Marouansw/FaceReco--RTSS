@@ -41,7 +41,7 @@ public class ImageUploadController {
             String base64Image = Base64.getEncoder().encodeToString(compressedBytes);
 
             // Send the image to Kafka
-            kafkaTemplate.send("my-topic", base64Image);
+            kafkaTemplate.send("aller", base64Image);
             
             CountDownLatch latch = new CountDownLatch(1);
             featureConsumer.setLatch(latch);

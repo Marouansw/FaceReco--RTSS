@@ -12,7 +12,7 @@ public class FeatureConsumer {
     private final AtomicReference<String> lastConsumedMessage = new AtomicReference<>();
     private CountDownLatch latch = new CountDownLatch(1);
 
-    @KafkaListener(topics = "test-topic", groupId = "group_id")
+    @KafkaListener(topics = "retour", groupId = "group_id")
     public void consumeFromTopic2(String message) {
         lastConsumedMessage.set(message);
         latch.countDown();  // Release the latch when a message is consumed

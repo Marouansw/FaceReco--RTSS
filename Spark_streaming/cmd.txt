@@ -1,0 +1,8 @@
+Zookeper : bin\windows\zookeeper-server-start.bat config\zookeeper.properties
+
+Kafka : bin\windows\kafka-server-start.bat config\server.properties
+
+producer : bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic aller
+Consumer : bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic retour
+
+lunch spark : spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1,org.apache.kafka:kafka-clients:3.5.1 --conf "spark.pyspark.python=C:\Users\LENOVO\AppData\Local\Programs\Python\Python310\python.exe" spark_streaming1.py

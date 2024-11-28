@@ -13,7 +13,7 @@ public class ImageConsumer {
 
     private byte[] imageBytes;
 
-    @KafkaListener(topics = "my-topic", groupId = "group_id")
+    @KafkaListener(topics = "aller", groupId = "group_id")
     public void consume(String compressedBase64Image) {
         System.out.println("Received compressed image: " + compressedBase64Image);
         try {
