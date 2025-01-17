@@ -57,12 +57,7 @@
 		</dependency>
 
 
-		<!-- TENSORFLOW -->
-		   <!-- <dependency>
-    <groupId>org.tensorflow</groupId>
-    <artifactId>tensorflow-core-platform</artifactId>
-    <version>0.5.0</version>
-</dependency> -->
+
 
 
 		 <!-- Spark Core and Streaming -->
@@ -72,37 +67,13 @@
         <version>3.1.2</version>
     </dependency>
     
-    <!-- Spark SQL -->
-    <dependency>
-        <groupId>org.apache.spark</groupId>
-        <artifactId>spark-sql_2.12</artifactId>
-        <version>3.1.2</version>
-    </dependency>
     
     <!-- Spark Streaming -->
-    <dependency>
-        <groupId>org.apache.spark</groupId>
-        <artifactId>spark-streaming_2.12</artifactId>
-        <version>3.1.2</version>
-    </dependency>
+  
     
     <!-- Spark Kafka Integration -->
-    <dependency>
-        <groupId>org.apache.spark</groupId>
-        <artifactId>spark-sql-kafka-0-10_2.12</artifactId>
-        <version>3.1.2</version>
-    </dependency>
-	<dependency>
-    <groupId>org.openpnp</groupId>
-    <artifactId>opencv</artifactId>
-    <version>4.7.0-0</version>
-	</dependency>
 
-    <dependency>
-        <groupId>org.apache.spark</groupId>
-        <artifactId>spark-streaming-kafka-0-10_2.12</artifactId>
-        <version>3.5.1</version>
-    </dependency>
+
 	<!-- llllllllllllllllllll -->
 	
 
@@ -115,6 +86,7 @@
     <artifactId>mysql-connector-java</artifactId>
     <version>8.0.33</version> <!-- Use the latest stable version -->
 	</dependency>
+	
 	</dependencies>
 	<build>
 		<plugins>

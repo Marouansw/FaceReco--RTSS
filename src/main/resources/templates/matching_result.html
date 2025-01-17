@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Result</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="/css/style_2.css">
+</head>
+<body>
+
+    <div id="dynamicContent">
+
+    </div>
+
+    <p th:if="${result == 'No matching found'}">No matching result found.</p>
+
+</body> 
+</html>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+        // Parse the Thymeleaf variable to JSON
+        var infos = /*[[${infos}]]*/ '{}';
+        var dynamicContent = document.getElementById('dynamicContent');
+
+        if (infos == 'No matching found') {
+            console.log('No matching result found.');
+            dynamicContent.innerHTML = `
+               <div class="header">
+        <div class="darken">   </div>
+    </div>
+    <img src="/image/x-button.png" id="check" class="blinking-image" alt="Desktop PC Hacker Security" style="width: 75px; float:left;margin-left:7px;margin-right:0px">
+    <div class="image-container" id="image-container" style="  box-shadow: 1px 8px 8px rgb(255, 0, 0);">
+                <img src="image/acces_denied.jpg">
+             </div>
+
+             <div class="info-container"> 
+                <h4 class='deepshadow' style=" text-shadow: 0 -1px 0 #ff3d11, 0 1px 0 #ff3d11, 0 2px 0 #ff3d11, 0 3px 0 #ff3d11, 0 4px 0 #ff3d11, 0 5px 0 #ff3d11, 0 6px 0 #ff3d11, 0 7px 0 #222, 0 8px 0 #ff3d11, 0 9px 0 #ff3d11, 0 9px 0 #ff3d11, 0 9px 0 #ff3d11, 0 8px 0 #181818, 0 10px 0 #161616, 0 9px 0 #141414, 0 9px 0 #121212, 0 9px 9px rgba(0, 0, 0, 0.9);
+">No Matching Found</h4>
+                <ul class="details"></div>
+            `;
+        } else {
+            infos = JSON.parse(infos); 
+            console.log(infos);
+            dynamicContent.innerHTML = `
+              <div class="header">
+        <div class="darken">   </div>
+    </div>
+        <img src="/image/check.png" class="blinking-image" style="width: 75px; float:left;margin-left:7px;margin-right:5px"> 
+            <div class="image-container" style="  box-shadow: 1px 4px 4px rgb(47, 229, 101);"> 
+                <img src="image/${infos.Image}/01.jpg">
+             </div>
+
+
+            <div class="info-container"> 
+                <h4 class='deepshadow' >Verified</h4>
+                <ul class="details">
+          <li ><strong> Name : </strong>${infos.Name}</li>
+          <li ><strong>Age : </strong>${infos.Age}</li>
+          <li ><strong>Profession : </strong>${infos.Job}</li> 
+        
+        </ul>  </div>
+            `;
+        }
+
+        
+
+    /*]]>*/
+
+</script>
+
+        
+    

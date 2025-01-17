@@ -12,13 +12,18 @@ public class FeatureController {
     @Autowired
     private FeatureConsumer featureConsumer;
 
-    @GetMapping("/Matching_results")
+    @GetMapping("/matching_result")
     
     public String getResult(Model model) throws InterruptedException {
        
         String lastMessage = featureConsumer.getLastConsumedMessage();
         
-        model.addAttribute("message", lastMessage);
-        return "matching_results";
+        if (lastMessage != null && lastMessage.contains("error")) {
+            model.addAttribute("infos", "No matching found");
+        } else {
+            model.addAttribute("infos", lastMessage);
+        }
+
+        return "matching_result";
     }
 }

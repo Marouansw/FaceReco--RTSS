@@ -1,8 +1,10 @@
 HELP.md
 target/
 gt_db
+faces
 s52/
 s53/
+*.h5
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
